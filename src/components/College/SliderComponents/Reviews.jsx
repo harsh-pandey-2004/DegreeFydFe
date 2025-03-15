@@ -223,14 +223,15 @@ const CollegeReview = ({ collegeData }) => {
                       </div>
                     </>
                   )}
-{console.log(section.content.description,"sh")}
-{section.id === "other" && (
-  <p
-    className="text-gray-700"
-    dangerouslySetInnerHTML={{ __html: section?.content.description }}
-  />
-)}
-
+                  {console.log(section.content.description, "sh")}
+                  {section.id === "other" && (
+                    <p
+                      className="text-gray-700"
+                      dangerouslySetInnerHTML={{
+                        __html: section?.content.description,
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             )

@@ -33,7 +33,7 @@ const SampleDegree = ({collegeData}) => {
 
         {/* Certificate Image */}
         <div className="relative sm:p-8 bg-gray-50 ">
-          <div className="aspect-[1.414/1] relative rounded-lg overflow-hidden border-8 border-double border-gray-200 shadow-inner">
+          <div className=" relative rounded-lg overflow-hidden border-8 border-double border-gray-200 shadow-inner">
             <img
               src={collegeData?.sampleDegree.image}
               alt="Sample Degree Certificate"

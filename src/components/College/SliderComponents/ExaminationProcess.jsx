@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 
 const getIconForStep = (stepTitle) => {
+  if (!stepTitle) return <CheckCircle className="w-6 h-6" />; // Default icon
+  
   const titleLower = stepTitle.toLowerCase();
 
   if (titleLower.includes("registration") || titleLower.includes("register")) {
@@ -43,42 +45,61 @@ const getIconForStep = (stepTitle) => {
   }
 };
 
-const parseStepData = (stepText) => {
-  // Skip the first item as it's the introduction text
-  if (stepText.startsWith("Amrita University follows")) {
-    return null;
-  }
-
-  // Split the step text by colon to separate title and description
-  const parts = stepText.split(":");
-
-  if (parts.length >= 2) {
-    const title = parts[0].trim();
-    const description = parts.slice(1).join(":").trim();
-    return { title, description };
-  } else {
-    // If no colon, use the whole text as both title and description
-    return { title: stepText, description: stepText };
-  }
-};
-
 const ExaminationProcess = ({ collegeData }) => {
-  // Extract steps from collegeData
-  const examPatternData = collegeData?.examPattern || {
-    title: "Amrita University Online Exam Process",
-    steps: [],
+  console.log("College Data:", collegeData);
+  
+  // Check if examPattern exists and has the expected structure
+  if (!collegeData?.examPattern || !Array.isArray(collegeData.examPattern.steps)) {
+    return <div>No examination process data available</div>;
+  }
+  
+  const examPatternData = {
+    title: collegeData.examPattern.title || "Examination Process",
+    steps: collegeData.examPattern.steps || []
   };
 
-  // Process steps data
-  const processedSteps = examPatternData.steps
-    .map(parseStepData)
-    .filter((step) => step !== null) // Filter out the intro step
-    .map((step, index) => ({
-      icon: getIconForStep(step.title),
+  // Process steps data - handle both old and new data structure
+  const processedSteps = examPatternData.steps.map((step, index) => {
+    // Handle new structure (with text and description properties)
+    if (step && typeof step === 'object' && (step.text !== undefined || step.description !== undefined)) {
+      return {
+        icon: getIconForStep(step.text),
+        number: String(index + 1).padStart(2, "0"),
+        title: step.text || "",
+        description: step.description || ""
+      };
+    } 
+    // Handle old structure (string only)
+    else if (typeof step === 'string') {
+      const parts = step.split(":");
+      
+      if (parts.length >= 2) {
+        const title = parts[0].trim();
+        const description = parts.slice(1).join(":").trim();
+        return {
+          icon: getIconForStep(title),
+          number: String(index + 1).padStart(2, "0"),
+          title: title,
+          description: description
+        };
+      } else {
+        return {
+          icon: getIconForStep(step),
+          number: String(index + 1).padStart(2, "0"),
+          title: step,
+          description: step
+        };
+      }
+    }
+    
+    // Default fallback for unexpected data
+    return {
+      icon: <CheckCircle className="w-6 h-6" />,
       number: String(index + 1).padStart(2, "0"),
-      title: step.title,
-      description: step.description,
-    }));
+      title: "Step " + (index + 1),
+      description: "No description available"
+    };
+  });
 
   return (
     <div className="min-h-screen sm:p-8">
@@ -87,15 +108,9 @@ const ExaminationProcess = ({ collegeData }) => {
           <h1
             className="text-4xl font-bold text-black mb-4"
             dangerouslySetInnerHTML={{
-              __html:
-                examPatternData?.title ||
-                "Amrita University Online Exam Process",
+              __html: examPatternData.title
             }}
           ></h1>
-          {/* <p className="text-lg text-gray-600">
-            {examPatternData.steps[0] ||
-              "A comprehensive guide to our seamless examination system"}
-          </p> */}
         </div>
 
         <div className="space-y-6">
@@ -118,14 +133,14 @@ const ExaminationProcess = ({ collegeData }) => {
                     <h2
                       className="text-xl font-bold text-gray-900"
                       dangerouslySetInnerHTML={{
-                        __html: step?.title || "",
+                        __html: step.title || "",
                       }}
                     ></h2>
                   </div>
                   <p
                     className="text-gray-600 leading-relaxed"
                     dangerouslySetInnerHTML={{
-                      __html: step?.description || "",
+                      __html: step.description || "",
                     }}
                   ></p>
                 </div>

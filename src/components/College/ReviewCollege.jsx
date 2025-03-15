@@ -199,7 +199,7 @@ const ReviewColleges = ({ collegeData }) => {
       </h1>
 
       {/* List of review summaries */}
-      {collegeData && collegeData[0].reviews ? (
+      {collegeData && collegeData[0]?.reviews ? (
         collegeData[0]?.reviews.map((review) => (
           <div key={review._id}>{renderSummaryView(review)}</div>
         ))

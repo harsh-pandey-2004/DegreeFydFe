@@ -11,25 +11,15 @@ const theme = {
 const CoursesTable = ({ collegeData }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState("all");
+  const [selectedDegree, setSelectedDegree] = useState("all");
 
-  // Get course types from collegeData
-  const courseTypes = useMemo(() => {
-    // If collegeData is not available yet or doesn't have coursesAndFee, return an empty array
+  // Get unique degree types from collegeData
+  const degreeTypes = useMemo(() => {
     if (!collegeData || !collegeData.coursesAndFee) return ["all"];
 
-    // Extract program types based on course names
-    const types = collegeData.coursesAndFee.map((item) => {
-      const course = item.course || "";
-      if (course.startsWith("MBA")) return "Business Administration";
-      if (course.startsWith("MCA")) return "Computer Applications";
-      if (course.startsWith("BCA")) return "Computer Applications";
-      if (course.startsWith("BCom")) return "Commerce";
-      if (course.startsWith("BBA")) return "Business";
-      if (course.startsWith("MCom")) return "Commerce";
-      return "Other";
-    });
-
+    const types = collegeData.coursesAndFee.map(
+      (item) => item.degreeName || ""
+    );
     return ["all", ...new Set(types)];
   }, [collegeData]);
 
@@ -42,27 +32,15 @@ const CoursesTable = ({ collegeData }) => {
   };
 
   const filteredAndSortedCourses = useMemo(() => {
-    // If collegeData is not available or doesn't contain coursesAndFee, return empty array
     if (!collegeData || !collegeData.coursesAndFee) return [];
 
     // Map the collegeData structure to match the component's expected format
     const formattedCourses = collegeData.coursesAndFee.map((item) => {
-      const course = item.course || "";
-      let type = "Other";
-
-      // Determine course type
-      if (course.startsWith("MBA")) type = "Business Administration";
-      else if (course.startsWith("MCA")) type = "Computer Applications";
-      else if (course.startsWith("BCA")) type = "Computer Applications";
-      else if (course.startsWith("BCom")) type = "Commerce";
-      else if (course.startsWith("BBA")) type = "Business";
-      else if (course.startsWith("MCom")) type = "Commerce";
-
       return {
-        name: course,
+        name: item.course || "",
+        degreeName: item.DegreeName || "", // Make sure this matches exactly
         duration: item.duration || "",
         fee: `₹ ${item.fee?.toLocaleString() || "N/A"}`,
-        type: type,
         _id: item._id,
       };
     });
@@ -74,13 +52,15 @@ const CoursesTable = ({ collegeData }) => {
       filtered = filtered.filter(
         (course) =>
           course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          course.type.toLowerCase().includes(searchTerm.toLowerCase())
+          course.degreeName.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Apply type filter
-    if (selectedType !== "all") {
-      filtered = filtered.filter((course) => course.type === selectedType);
+    // Apply degree filter
+    if (selectedDegree !== "all") {
+      filtered = filtered.filter(
+        (course) => course.degreeName === selectedDegree
+      );
     }
 
     // Apply sorting
@@ -100,7 +80,7 @@ const CoursesTable = ({ collegeData }) => {
     }
 
     return filtered;
-  }, [collegeData, searchTerm, selectedType, sortConfig]);
+  }, [collegeData, searchTerm, selectedDegree, sortConfig]);
 
   return (
     <div className="h-fit bg-gradient-to-b from-gray-50 to-white sm:px-4">
@@ -129,16 +109,16 @@ const CoursesTable = ({ collegeData }) => {
               </div>
             </div>
 
-            {/* Course Type Filter */}
+            {/* Degree Filter */}
             <div className="md:w-64">
               <select
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 hover:border-violet-600 focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:ring-opacity-50 bg-white transition-colors duration-200"
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
+                value={selectedDegree}
+                onChange={(e) => setSelectedDegree(e.target.value)}
               >
-                {courseTypes.map((type) => (
+                {degreeTypes.map((type) => (
                   <option key={type} value={type}>
-                    {type === "all" ? "All Types" : type}
+                    {type === "all" ? "All Degrees" : type}
                   </option>
                 ))}
               </select>
@@ -169,10 +149,12 @@ const CoursesTable = ({ collegeData }) => {
                   </th>
                   <th
                     className="px-6 py-4 text-left cursor-pointer hover:bg-gray-100"
-                    onClick={() => requestSort("type")}
+                    onClick={() => requestSort("degreeName")}
                   >
                     <div className="flex items-center space-x-2">
-                      <span className="font-semibold text-gray-900">Type</span>
+                      <span className="font-semibold text-gray-900">
+                        Degree
+                      </span>
                       <ArrowUpDown className="w-4 h-4 text-gray-500" />
                     </div>
                   </th>
@@ -211,13 +193,14 @@ const CoursesTable = ({ collegeData }) => {
                       className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
                     >
                       <td className="px-6 py-4">
-                        {console.log(course, "jdh")}
                         <span className="font-medium text-gray-900">
-                          {course.CourseName}
+                          {course.name}
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-gray-600">{course.type}</span>
+                        <span className="text-gray-600">
+                          {course.degreeName}
+                        </span>
                       </td>
                       <td className="px-6 py-4">
                         <span className="text-gray-600">{course.duration}</span>

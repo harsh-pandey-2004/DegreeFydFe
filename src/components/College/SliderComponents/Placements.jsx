@@ -18,7 +18,7 @@ const EnhancedPlacementSection = ({ collegeData }) => {
 
   // Extract data from collegeData
   const placement = collegeData?.placement || {};
-  const stats = collegeData?.stats || {};
+  const stats = collegeData?.placement.stats || {};
 
   // Create dynamic services array based on faculty and other data
   const generateServices = () => {
@@ -81,11 +81,7 @@ const EnhancedPlacementSection = ({ collegeData }) => {
 
   // Create dynamic stats from collegeData
   const statsItems = [
-    {
-      icon: <Briefcase />,
-      value: `${stats.topCompanies?.length || 0}+`,
-      label: "Companies",
-    },
+  
     {
       icon: <TrendingUp />,
       value: stats.placementRate || "0%",
@@ -105,10 +101,12 @@ const EnhancedPlacementSection = ({ collegeData }) => {
         <h1 className="text-2xl sm:text-4xl font-bold text-black mb-4 relative z-10">
           Placement Excellence
         </h1>
-        <p className="text-md text-gray-700 sm:max-w-2xl mx-auto relative z-10">
-          {collegeData?.collegeName}'s 360° Career Development & Placement
-          Assistance
-        </p>
+        <p
+          className="text-gray-700"
+          dangerouslySetInnerHTML={{
+            __html: (collegeData && placement?.description) || "",
+          }}
+        ></p>
       </div>
 
       {/* Stats Section */}
@@ -195,22 +193,7 @@ const EnhancedPlacementSection = ({ collegeData }) => {
             ))}
           </div>
         </div>
-      )}
-
-      {/* Placement Description */}
-      {placement.description && (
-        <div className="mt-8 bg-white rounded-xl p-6">
-          <h2 className="text-xl font-bold text-black mb-4">
-            Placement Overview
-          </h2>
-          <p
-            className="text-gray-700"
-            dangerouslySetInnerHTML={{
-              __html: (collegeData && placement?.description) || "",
-            }}
-          ></p>
-        </div>
-      )}
+      )}  
     </div>
   );
 };

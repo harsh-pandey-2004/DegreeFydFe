@@ -10,7 +10,6 @@ export default function CollegeFaq({ collegeData }) {
 
   // Check if collegeData and collegeData.faq exist before mapping
   const faqItems = collegeData &&collegeData[0]?.faq || [];
-console.log(collegeData && collegeData,"ga")
   const filteredFAQs = faqItems.filter((item) =>
     item.question.toLowerCase().includes(searchQuery.toLowerCase())
   );

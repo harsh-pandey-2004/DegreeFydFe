@@ -35,7 +35,6 @@ const CollegePage = () => {
 
   return (
     <div>
-      {console.log(collegeData)}
       {(collegeData?.[0]?.status === "approved" || istest) && (
         <>
           <HeroCollege collegeData={collegeData} />

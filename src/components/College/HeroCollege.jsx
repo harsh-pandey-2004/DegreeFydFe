@@ -10,6 +10,12 @@ import {
 import React from "react";
 
 const HeroCollege = ({ collegeData }) => {
+  const formatNumber = (num) => {
+    if (num >= 10000000) return (num / 10000000).toFixed(1) + " Cr"; // 1 Crore = 10,000,000
+    if (num >= 100000) return (num / 100000).toFixed(1) + " L"; // 1 Lakh = 100,000
+    if (num >= 1000) return (num / 1000).toFixed(1) + " K"; // 1 Thousand = 1,000
+    return num;
+  };
   return (
     <section
       data-section="university-hero"
@@ -19,11 +25,11 @@ const HeroCollege = ({ collegeData }) => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-12 ">
           <div className="w-full md:w-1/2">
             <div className="relative">
-              <div className="mb-6">
+              <div className="mb-3">
                 <img
                   src={collegeData && collegeData[0]?.collegeLogo}
-                  alt="Amrita University Logo"
-                  className="h-24 w-24 object-contain"
+                  alt={collegeData && collegeData[0]?.collegeName}
+                  className="w-32 object-contain"
                 />
               </div>
 
@@ -55,10 +61,9 @@ const HeroCollege = ({ collegeData }) => {
               <p
                 className="mt-4 text-gray-700 text-md leading-relaxed mb-8"
                 dangerouslySetInnerHTML={{
-                  __html: collegeData &&collegeData[0]?.aboutUsSub || "",
+                  __html: (collegeData && collegeData[0]?.aboutUsSub) || "",
                 }}
               />
-                
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
@@ -80,7 +85,7 @@ const HeroCollege = ({ collegeData }) => {
               {/* Image */}
               <img
                 src={collegeData && collegeData[0]?.collegeImage}
-                alt="Amrita University Campus"
+                alt={collegeData && collegeData[0]?.collegeName}
                 className="w-full object-cover h-[400px] transform hover:scale-105 transition-transform duration-700"
               />
 
@@ -90,7 +95,9 @@ const HeroCollege = ({ collegeData }) => {
                     <Award className="w-4 h-4 text-blue-600" />
                     NIRF Ranking
                   </div>
-                  <div className="text-2xl font-bold text-violet-900">7</div>
+                  <div className="text-2xl font-bold text-violet-900">
+                    {collegeData && collegeData[0]?.nirfranking}
+                  </div>
                 </div>
 
                 {/* Highest Package */}
@@ -124,7 +131,10 @@ const HeroCollege = ({ collegeData }) => {
                     <Users className="w-4 h-4 text-orange-600" />
                     Students
                   </div>
-                  <div className="text-2xl font-bold text-violet-900">20K+</div>
+                  <div className="text-2xl font-bold text-violet-900">
+                    {" "}
+                    {collegeData && formatNumber(collegeData[0]?.students)}
+                  </div>
                 </div>
               </div>
             </div>

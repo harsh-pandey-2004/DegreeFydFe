@@ -59,7 +59,6 @@ const AdmissionSteps = ({ collegeData }) => {
           <h1 className="text-3xl font-bold text-gray-900 mb-3">
             Admission Process
           </h1>
-          {console.log(collegeData?.admissionProcess.description)}
           <p
             className="text-base text-gray-700"
             dangerouslySetInnerHTML={{
@@ -82,7 +81,7 @@ const AdmissionSteps = ({ collegeData }) => {
                 </div>
 
                 <div className="flex-grow">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex flex-col  gap-2 mb-1">
                     <span
                       className="text-xs font-semibold"
                       style={{ color: theme.primary }}

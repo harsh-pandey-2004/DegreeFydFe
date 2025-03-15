@@ -7,9 +7,10 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 
-const CollegeReview = () => {
+const CollegeReview = ({ collegeData }) => {
+  console.log("hdjd", collegeData);
   const [activeSection, setActiveSection] = useState("all");
-
+  console.log([collegeData?.placement.topCompanies.map((e) => e).join(", ")]);
   const sections = [
     {
       id: "placements",
@@ -17,15 +18,14 @@ const CollegeReview = () => {
       icon: <Users className="w-6 h-6" />,
       content: {
         stats: [
-          { label: "Placement Rate", value: "60%" },
-          { label: "Highest Package", value: "59.5 LPA" },
-        ],
-        companies: [
-          "Infosys",
-          "Microsoft",
-          "Google",
-          "Kotak Mahendra Bank",
-          "HCL",
+          {
+            label: "Placement Rate",
+            value: `${collegeData?.placement.stats.placementRate}`,
+          },
+          {
+            label: "Highest Package",
+            value: `${collegeData?.placement.stats.highestPackage}`,
+          },
         ],
         description:
           "Students with CGPA above 8 were placed in prestigious companies in India and abroad.",
@@ -43,9 +43,18 @@ const CollegeReview = () => {
           "Relevant Curriculum",
         ],
         academics: [
-          { label: "Exam Difficulty", value: "Moderate" },
-          { label: "Average CGPA", value: "7.0+" },
-          { label: "Minimum CGPA", value: "5.5" },
+          {
+            label: "Exam Difficulty",
+            value: `${collegeData?.examDetails.difficulty}`,
+          },
+          {
+            label: "Average CGPA",
+            value: `${collegeData?.examDetails.averageCGPA}`,
+          },
+          {
+            label: "Minimum CGPA",
+            value: `${collegeData?.examDetails.minimumCGPA}`,
+          },
         ],
       },
     },
@@ -54,8 +63,7 @@ const CollegeReview = () => {
       title: "Other",
       icon: <MoreHorizontal className="w-6 h-6" />,
       content: {
-        description:
-          "Family-recommended course with manageable curriculum. Regular cultural events including traditional celebrations.",
+        description: `${collegeData?.examDetails.other}`,
       },
     },
   ];
@@ -136,14 +144,17 @@ const CollegeReview = () => {
                       <div>
                         <h3 className="font-semibold mb-2">Top Companies</h3>
                         <div className="flex flex-wrap gap-2">
-                          {section.content.companies.map((company) => (
-                            <span
-                              key={company}
-                              className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm"
-                            >
-                              {company}
-                            </span>
-                          ))}
+                          {collegeData?.placement.topCompanies.map(
+                            (company, index) => (
+                              <span
+                                key={index} // Use index as key
+                                className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm"
+                              >
+                                {console.log(company, "gdh")}
+                                {company}
+                              </span>
+                            )
+                          )}
                         </div>
                       </div>
                     </>
@@ -212,12 +223,14 @@ const CollegeReview = () => {
                       </div>
                     </>
                   )}
+{console.log(section.content.description,"sh")}
+{section.id === "other" && (
+  <p
+    className="text-gray-700"
+    dangerouslySetInnerHTML={{ __html: section?.content.description }}
+  />
+)}
 
-                  {section.id === "other" && (
-                    <p className="text-gray-700">
-                      {section.content.description}
-                    </p>
-                  )}
                 </div>
               </div>
             )

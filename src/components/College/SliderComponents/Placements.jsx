@@ -21,67 +21,9 @@ const EnhancedPlacementSection = ({ collegeData }) => {
   const stats = collegeData?.placement.stats || {};
 
   // Create dynamic services array based on faculty and other data
-  const generateServices = () => {
-    const services = [];
-
-    // Add faculty items
-    if (stats.faculty && stats.faculty.length > 0) {
-      const iconMap = {
-        0: <GraduationCap className="w-8 h-8" />,
-        1: <MessageSquare className="w-8 h-8" />,
-        2: <FileText className="w-8 h-8" />,
-      };
-
-      const bgColorMap = {
-        0: "hover:bg-blue-50",
-        1: "hover:bg-purple-50",
-        2: "hover:bg-green-50",
-      };
-
-      stats.faculty.forEach((item, index) => {
-        // Remove any leading pipe characters
-        const cleanedItem = item.replace(/^\|/, "").trim();
-
-        services.push({
-          icon: iconMap[index] || <GraduationCap className="w-8 h-8" />,
-          title: cleanedItem,
-          description: `${
-            collegeData?.collegeName || "University"
-          } provides ${cleanedItem.toLowerCase()} to support student success`,
-          bgColor: bgColorMap[index] || "hover:bg-blue-50",
-        });
-      });
-    }
-
-    // Add the other field if it exists
-    if (stats.other) {
-      const cleanedOther = stats.other.replace(/^\|/, "").trim();
-      services.push({
-        icon: <Heart className="w-8 h-8" />,
-        title: "Special Features",
-        description: cleanedOther,
-        bgColor: "hover:bg-red-50",
-      });
-    }
-
-    // Return services or a default if empty
-    return services.length > 0
-      ? services
-      : [
-          {
-            icon: <BookOpen className="w-8 h-8" />,
-            title: "Learning Experience",
-            description: "Quality education with expert guidance",
-            bgColor: "hover:bg-blue-50",
-          },
-        ];
-  };
-
-  const services = generateServices();
 
   // Create dynamic stats from collegeData
   const statsItems = [
-  
     {
       icon: <TrendingUp />,
       value: stats.placementRate || "0%",
@@ -125,23 +67,6 @@ const EnhancedPlacementSection = ({ collegeData }) => {
                 <div className="text-gray-600">{stat.label}</div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Services Grid (Faculty and Other Features) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 my-8">
-        {services.map((service, index) => (
-          <div
-            key={index}
-            className={`bg-white p-6 rounded-xl shadow-md transform hover:scale-105 
-                      transition-all duration-300 ${service.bgColor} hover:shadow-xl`}
-          >
-            <div className="text-violet-600 mb-4 h-10 w-10">{service.icon}</div>
-            <h3 className="text-xl font-semibold text-black mb-2">
-              {service.title}
-            </h3>
-            <p className="text-gray-600">{service.description}</p>
           </div>
         ))}
       </div>
@@ -193,7 +118,7 @@ const EnhancedPlacementSection = ({ collegeData }) => {
             ))}
           </div>
         </div>
-      )}  
+      )}
     </div>
   );
 };

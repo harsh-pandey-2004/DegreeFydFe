@@ -34,7 +34,7 @@ const AmritaRankings = ({ collegeData }) => {
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="p-6">
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Amrita Ahead - Excellence in Education
+            {collegeData?.collegeName} Ahead - Excellence in Education
           </h2>
           
           <div className="space-y-8">

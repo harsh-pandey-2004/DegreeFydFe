@@ -8,9 +8,7 @@ import {
 } from "lucide-react";
 
 const CollegeReview = ({ collegeData }) => {
-  console.log("hdjd", collegeData);
   const [activeSection, setActiveSection] = useState("all");
-  console.log([collegeData?.placement.topCompanies.map((e) => e).join(", ")]);
   const sections = [
     {
       id: "placements",
@@ -150,7 +148,6 @@ const CollegeReview = ({ collegeData }) => {
                                 key={index} // Use index as key
                                 className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm"
                               >
-                                {console.log(company, "gdh")}
                                 {company}
                               </span>
                             )
@@ -223,7 +220,6 @@ const CollegeReview = ({ collegeData }) => {
                       </div>
                     </>
                   )}
-                  {console.log(section.content.description, "sh")}
                   {section.id === "other" && (
                     <p
                       className="text-gray-700"

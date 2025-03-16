@@ -45,9 +45,7 @@ const getIconForStep = (stepTitle) => {
   }
 };
 
-const ExaminationProcess = ({ collegeData }) => {
-  console.log("College Data:", collegeData);
-  
+const ExaminationProcess = ({ collegeData }) => {  
   // Check if examPattern exists and has the expected structure
   if (!collegeData?.examPattern || !Array.isArray(collegeData.examPattern.steps)) {
     return <div>No examination process data available</div>;

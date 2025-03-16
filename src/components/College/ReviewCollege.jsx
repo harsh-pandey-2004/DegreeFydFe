@@ -72,9 +72,7 @@ const ReviewColleges = ({ collegeData }) => {
             </div>
 
             <div className="mb-4">
-              <div className="font-bold text-gray-800">
-                {review.review[0]?.type || "Overall"}:
-              </div>
+             
               <div
                 className="text-gray-700"
                 dangerouslySetInnerHTML={{
@@ -171,7 +169,7 @@ const ReviewColleges = ({ collegeData }) => {
                     dangerouslySetInnerHTML={{
                       __html:
                         item?.content ||
-                        "Amrita University Online Exam Process",
+                        "",
                     }}
                   />
                 </div>

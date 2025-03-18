@@ -88,7 +88,7 @@ const CoursesTable = ({ collegeData }) => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Courses</h1>
           <p className="text-xl text-gray-600">
-            Explore online learning courses in Amity University Online
+            Explore online learning courses in {collegeData?.collegeName}
           </p>
         </div>
 

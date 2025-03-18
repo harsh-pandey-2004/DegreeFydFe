@@ -192,17 +192,7 @@ const CollegeReview = ({ collegeData }) => {
 
                   {section.id === "faculty" && (
                     <>
-                      <div className="space-y-2">
-                        {section.content.highlights.map((highlight) => (
-                          <div
-                            key={highlight}
-                            className="flex items-center gap-2"
-                          >
-                            <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                            <span className="text-gray-700">{highlight}</span>
-                          </div>
-                        ))}
-                      </div>
+                     
                       <div className="grid grid-cols-2 gap-4 mt-4">
                         {section.content.academics.map((item) => (
                           <div
